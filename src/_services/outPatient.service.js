@@ -30,4 +30,30 @@ export default class OutPatientService{
                 })
         })
     }
+
+    getTotalStatus() {
+        return new Promise((resolved, rejected) => {
+            axios
+                .get(`${server}/api/out-patient/total-status`)
+                .then((res) => {
+                    resolved(res.data)
+                })
+                .catch((err) => {
+                    rejected(err)
+                })
+        })
+    }
+
+    saveTotalStatus(data) {
+        return new Promise((resolved, rejected) => {
+            axios
+                .post(`${server}/api/out-patient/save-total`, data)
+                .then((res) => {
+                    resolved(res.data)
+                })
+                .catch((err) => {
+                    rejected(err)
+                })
+        })
+    }
 }
