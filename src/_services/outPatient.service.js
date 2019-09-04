@@ -2,12 +2,13 @@ import axios from 'axios'
 import { resolve } from 'url';
 import { reject } from 'q';
 // import config from '../constants/constants.config';
+var server = 'https://exparel-server.herokuapp.com';
 
 export default class OutPatientService{
     getGlobalStatus(){
         return new Promise((resolved, rejected) => {
             axios
-            .get(`http://localhost:4000/api/out-patient/global-status`)
+            .get(`${server}/api/out-patient/global-status`)
             .then((res) => {
                 resolved(res.data)
             })
@@ -20,7 +21,7 @@ export default class OutPatientService{
     saveActivity(data){
         return new Promise((resolved, rejected) => {
             axios
-                .post(`http://localhost:4000/api/out-patient/save-activity`, data)
+                .post(`${server}/api/out-patient/save-activity`, data)
                 .then((res) => {
                     resolved(res.data)
                 })
