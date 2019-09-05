@@ -26,6 +26,7 @@ import PatientGlobalStatus from '../../pages/patientGlobalStatus/PatientGlobalSt
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
+import PatientLiveStatus from "../../pages/patientLiveStatus/patientLiveStatus";
 
 function Layout(props) {
   var classes = useStyles();
@@ -46,7 +47,7 @@ function Layout(props) {
             <div className={classes.fakeToolbar} />
             <Switch>
               <Route path="/app/out-patient/global-status" component={PatientGlobalStatus} />
-              <Route path="/app/out-patient/live-status" component={Dashboard} />
+              <Route path="/app/out-patient/live-status" component={PatientLiveStatus} />
               <Route path="/app/typography" component={Typography} />
               <Route path="/app/tables" component={Tables} />
               <Route path="/app/notifications" component={Notifications} />
