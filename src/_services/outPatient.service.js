@@ -3,6 +3,7 @@ import { resolve } from 'url';
 import { reject } from 'q';
 // import config from '../constants/constants.config';
 var server = 'https://exparel-server.herokuapp.com';
+// var server = 'http://localhost:5000';
 
 export default class OutPatientService{
     getGlobalStatus(){

@@ -60,7 +60,7 @@ export default class TotalStatusForm extends Component {
         this.setState({
             submitting: true
         })
-        this._service.saveActivity(data)
+        this._service.saveTotalStatus(data)
             .then((res) => {
                 this.setState({
                     submitting: false

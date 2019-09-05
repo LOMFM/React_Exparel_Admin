@@ -36,6 +36,24 @@ export default class PatientGlobalStatus extends Component {
                 }
                 this.setState({loading: false})
             })
+        this._service.getTotalStatus()
+            .then(res => {
+                var total = {}
+                res.data.forEach( e => {
+                    if( e.category ){
+                        total[e.category] = e
+                    }
+                })
+                this.setState({
+                    total: total
+                })
+            })
+            .catch(err => {
+                if(!err){
+
+                }
+                this.setState({})
+            })
     }
 
 
@@ -62,16 +80,16 @@ export default class PatientGlobalStatus extends Component {
                 </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Medicare Total" basic={{page: 'patient', category: 'medicare'}}></TotalStatusForm>
+                        <TotalStatusForm title="Medicare Total" basic={{page: 'patient', category: 'medicare'}} data={this.state.total ? this.state.total['medicare']: {}}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Commercial Total" basic={{page: 'patient', category: 'commercial'}}></TotalStatusForm>
+                        <TotalStatusForm title="Commercial Total" basic={{page: 'patient', category: 'commercial'}} data={this.state.total ? this.state.total['commercial']: {}}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Medicaid Total" basic={{page: 'patient', category: 'medicaid'}}></TotalStatusForm>
+                        <TotalStatusForm title="Medicaid Total" basic={{page: 'patient', category: 'medicaid'}} data={this.state.total ? this.state.total['medicaid']: {}}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="VA/DOD Total" basic={{page: 'patient', category: 'va'}}></TotalStatusForm>
+                        <TotalStatusForm title="VA/DOD Total" basic={{page: 'patient', category: 'va'}} data={this.state.total ? this.state.total['va']: {}}></TotalStatusForm>
                     </Grid>
                 </Grid>
             </>
