@@ -14,19 +14,12 @@ import useStyles from "./styles";
 import Header from "../Header";
 import Sidebar from "../Sidebar";
 
-// pages
-import Dashboard from "../../pages/dashboard";
-import Typography from "../../pages/typography";
-import Notifications from "../../pages/notifications";
-import Maps from "../../pages/maps";
-import Tables from "../../pages/tables";
-import Icons from "../../pages/icons";
-import Charts from "../../pages/charts";
-import PatientGlobalStatus from '../../pages/patientGlobalStatus/PatientGlobalStatus';
-
 // context
 import { useLayoutState } from "../../context/LayoutContext";
 import PatientLiveStatus from "../../pages/patientLiveStatus/patientLiveStatus";
+import PatientGlobalStatus from '../../pages/patientGlobalStatus/PatientGlobalStatus';
+import ASCPayerBasicPage from "../../pages/ascPayerPage/ASCPayerBasicPage";
+import TopASCPayerPage from "../../pages/ascPayerPage/topPayerPage";
 
 function Layout(props) {
   var classes = useStyles();
@@ -48,17 +41,18 @@ function Layout(props) {
             <Switch>
               <Route path="/app/out-patient/global-status" component={PatientGlobalStatus} />
               <Route path="/app/out-patient/live-status" component={PatientLiveStatus} />
-              <Route path="/app/typography" component={Typography} />
-              <Route path="/app/tables" component={Tables} />
-              <Route path="/app/notifications" component={Notifications} />
-              <Route
-                exact
-                path="/app/ui"
-                render={() => <Redirect to="/app/ui/icons" />}
-              />
-              <Route path="/app/ui/maps" component={Maps} />
-              <Route path="/app/ui/icons" component={Icons} />
-              <Route path="/app/ui/charts" component={Charts} />
+              <Route path="/app/asc-payer/basic" component={ASCPayerBasicPage} />
+              <Route path="/app/asc-payer/top" component={TopASCPayerPage} />
+              <Route path="/app/asc-payer/commerical-plan" component={PatientLiveStatus} />
+              <Route path="/app/asc-payer/medicaid-plan" component={PatientLiveStatus} />
+              <Route path="/app/hopd-payer/basic" component={PatientLiveStatus} />
+              <Route path="/app/hopd-payer/top" component={PatientLiveStatus} />
+              <Route path="/app/hopd-payer/commerical-plan" component={PatientLiveStatus} />
+              <Route path="/app/hopd-payer/medicaid-plan" component={PatientLiveStatus} />
+              <Route path="/app/dental-payer/statistics" component={PatientLiveStatus} />
+              <Route path="/app/dental-payer/basic" component={PatientLiveStatus} />
+              <Route path="/app/dental-payer/top" component={PatientLiveStatus} />
+              <Route path="/app/dental-payer/commercial-plan" component={PatientLiveStatus} />
             </Switch>
           </div>
         </>

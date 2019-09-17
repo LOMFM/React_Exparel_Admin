@@ -6,6 +6,8 @@ export default makeStyles(theme => ({
     "&:hover, &:focus": {
       backgroundColor: theme.palette.background.light,
     },
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
   },
   linkActive: {
     backgroundColor: theme.palette.background.light,
@@ -32,7 +34,7 @@ export default makeStyles(theme => ({
     padding: 0,
     color: theme.palette.text.secondary + "CC",
     transition: theme.transitions.create(["opacity", "color"]),
-    fontSize: 16,
+    fontSize: 14,
   },
   linkTextActive: {
     color: theme.palette.text.primary,

@@ -20,9 +20,11 @@ export default makeStyles(theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    left: 0,
+    right: 'unset'
   },
   toolbar: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(2),
   },
   hide: {
@@ -94,11 +96,11 @@ export default makeStyles(theme => ({
     },
   },
   headerMenuButton: {
-    marginLeft: theme.spacing(2),
+    marginLeft: 0,
     padding: theme.spacing(0.5),
   },
   headerMenuButtonCollapse: {
-    marginRight: theme.spacing(2),
+    marginRight: 0,
   },
   headerIcon: {
     fontSize: 28,

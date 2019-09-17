@@ -14,6 +14,7 @@ export default class PatientLiveStatus extends Component {
             loading : false,
         }
         this.addData = this.addData.bind(this)
+        this.changeData = this.changeData.bind(this)
     }
 
     addData() {
@@ -38,6 +39,10 @@ export default class PatientLiveStatus extends Component {
             })
     }
 
+    changeData(index, data){
+        this.state.data[index] = data;
+    }
+
 
     render() {
         return (
@@ -52,7 +57,7 @@ export default class PatientLiveStatus extends Component {
                             <label>Action</label>
                         </Grid>
                         {this.state.data ? this.state.data.map((data, index) => {
-                        return (<LiveStatusForm data={data} basic={{page: 'patient', _id: data._id}}></LiveStatusForm>)
+                        return (<LiveStatusForm data={data} basic={{page: 'patient', _id: data._id}} change={ (data) => this.changeData(index, data)} key={index}></LiveStatusForm>)
                         }):""}
                     </Grid>
                 </Grid>

@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Grid,
-    Typography,
     CircularProgress,
+    Typography,
     Button,
     TextField,
+    Fade,
 } from "@material-ui/core";
 import '../../_styles/card.css'
 
 
 import OutPatientService from '../../_services/outPatient.service';
 
-export default class TotalStatusForm extends Component {
+export default class ServiceStatusForm extends Component {
 
     _service = new OutPatientService;
 
@@ -20,35 +21,39 @@ export default class TotalStatusForm extends Component {
         super(props)
         this.state = {
             total: 0,
-            asc: 0,
-            hopd: 0,
+            active: 0,
+            pending: 0,
+            deactive: 100
         }
         this.formSubmit = this.formSubmit.bind(this)
         this.onChangeTotal = this.onChangeTotal.bind(this)
-        this.onChangeASC = this.onChangeASC.bind(this)
-        this.onChangeHOPD = this.onChangeHOPD.bind(this)
+        this.onChangeActive = this.onChangeActive.bind(this)
+        this.onChangePending = this.onChangePending.bind(this)
+        this.onChangeDeactive = this.onChangeDeactive.bind(this)
     }
 
     componentDidMount() {
-        if (this.props.data) {
-            const { total, asc, hopd } = this.props.data;
-            this.setState({
-                total: total,
-                asc: asc,
-                hopd: hopd
+        this.setState({
+            loading: true
+        })
+        this._service.getOneActiveStatus(this.props.basic)
+            .then((data) => {
+                for( let key in data.data ){
+                    this.state[key] = data.data[key]
+                }
+                this.setState({
+                    loading: false
+                })
             })
-        }
+            .catch((error) => {
+                this.setState({
+                    loading: false
+                })
+            })
     }
 
-    componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.data) {
-            const { total, asc, hopd } = nextProps.data;
-            this.setState({
-                total: total,
-                asc: asc,
-                hopd: hopd
-            })
-        }
+    componentWillMount(){
+        
     }
 
     formSubmit(e) {
@@ -60,7 +65,7 @@ export default class TotalStatusForm extends Component {
         this.setState({
             submitting: true
         })
-        this._service.saveTotalStatus(data)
+        this._service.saveOneActiveStatus(data, this.props.basic.page)
             .then((res) => {
                 this.setState({
                     submitting: false
@@ -79,15 +84,21 @@ export default class TotalStatusForm extends Component {
         })
     }
 
-    onChangeASC(e) {
+    onChangeActive(e) {
         this.setState({
-            asc: e.target.value
+            active: e.target.value
         })
     }
 
-    onChangeHOPD(e) {
+    onChangePending(e) {
         this.setState({
-            hopd: e.target.value
+            pending: e.target.value
+        })
+    }
+
+    onChangeDeactive(e) {
+        this.setState({
+            deactive: e.target.value
         })
     }
 
@@ -111,31 +122,45 @@ export default class TotalStatusForm extends Component {
                             type="number"
                             fullWidth
                         />
-                        <Typography>ASC (%)</Typography>
+                        <Typography>Active (%)</Typography>
                         <TextField
                             id="active"
                             InputProps={{
                                 classes: {
                                 },
                             }}
-                            value={this.state.asc}
-                            onChange={this.onChangeASC}
+                            value={this.state.active}
+                            onChange={this.onChangeActive}
                             margin="normal"
-                            placeholder="ASC(%)"
+                            placeholder="Active(%)"
                             type="number"
                             fullWidth
                         />
-                        <Typography>HOPD (%)</Typography>
+                        <Typography>Pending (%)</Typography>
                         <TextField
                             id="pending"
                             InputProps={{
                                 classes: {
                                 },
                             }}
-                            value={this.state.hopd}
-                            onChange={this.onChangeHOPD}
+                            value={this.state.pending}
+                            onChange={this.onChangePending}
                             margin="normal"
-                            placeholder="HOPD(%)"
+                            placeholder="Pending(%)"
+                            type="number"
+                            fullWidth
+                        />
+                        <Typography>Deactive (%)</Typography>
+                        <TextField
+                            id="deactive"
+                            InputProps={{
+                                classes: {
+                                },
+                            }}
+                            value={this.state.deactive}
+                            onChange={this.onChangeDeactive}
+                            margin="normal"
+                            placeholder="Deactive(%)"
                             type="number"
                             fullWidth
                         />
@@ -145,6 +170,7 @@ export default class TotalStatusForm extends Component {
                                 <Button
                                     onClick={this.formSubmit}
                                     variant="contained"
+                                    color="primary"
                                     size="large"
                                 >
                                     Save
@@ -157,10 +183,11 @@ export default class TotalStatusForm extends Component {
     }
 }
 
-TotalStatusForm.propTypes = {
+ServiceStatusForm.propTypes = {
     basic: PropTypes.shape({
         page: PropTypes.string,
         category: PropTypes.string,
+        type: PropTypes.string
     }),
     title: PropTypes.string,
     api: PropTypes.string,

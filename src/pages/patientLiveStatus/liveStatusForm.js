@@ -64,6 +64,7 @@ export default class LiveStatusForm extends Component {
                 this.setState({
                     submitting: false
                 })
+                this.props.change(res.data);
             })
             .catch((err) => {
                 this.setState({

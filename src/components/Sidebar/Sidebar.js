@@ -7,7 +7,12 @@ import {
   FilterNone as UIElementsIcon,
   BorderAll as TableIcon,
   ArrowBack as ArrowBackIcon,
+  Map as MapIcon,
+  PagesOutlined as ASCPageIcon,
+  PagesRounded as HOPDPageIcon,
+  PeopleOutline as DentalPageIcon,
 } from "@material-ui/icons";
+// LocalHospital, LocalPharmacy
 import { useTheme } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import classNames from "classnames";
@@ -34,27 +39,66 @@ const structure = [
   },
   {
     id: 1,
-    label: "Typography",
-    link: "/app/typography",
-    icon: <TypographyIcon />,
+    label: "ASC Payer",
+    link: "/app/asc-payer",
+    icon: <ASCPageIcon />,
+    children: [
+      {label: 'Basic Information', link: '/app/asc-payer/basic'},
+      {label: 'Top 10 Payer', link: '/app/asc-payer/top'},
+      {label: 'Commercial Plans', link: '/app/asc-payer/commerical-plan'},
+      {label: 'Medicaid Plans', link: '/app/asc-payer/medicaid-plan'}
+    ]
   },
-  { id: 2, label: "Tables", link: "/app/tables", icon: <TableIcon /> },
+  {
+    id: 2,
+    label: "HOPD Payer",
+    link: "/app/hopd-payer",
+    icon: <HOPDPageIcon />,
+    children: [
+      {label: 'Basic Information', link: '/app/hopd-payer/basic'},
+      {label: 'Top 10 Payer', link: '/app/hopd-payer/top'},
+      {label: 'Commercial Plans', link: '/app/hopd-payer/commerical-plan'},
+      {label: 'Medicaid Plans', link: '/app/hopd-payer/medicaid-plan'}
+    ]
+  },
   {
     id: 3,
-    label: "Notifications",
-    link: "/app/notifications",
-    icon: <NotificationsIcon />,
+    label: "Dental Payer",
+    link: "/app/dental-payer",
+    icon: <DentalPageIcon />,
+    children: [
+      {label: 'Statistics', link: '/app/dental-payer/statistics'},
+      {label: 'Basic Information', link: '/app/dental-payer/basic'},
+      {label: 'Top 10 Payer', link: '/app/dental-payer/top'},
+      {label: 'Plans', link: '/app/dental-payer/commerical-plan'},
+    ]
   },
   {
     id: 4,
-    label: "UI Elements",
-    link: "/app/ui",
+    label: "Surgery Centers",
+    link: "/app/surgery",
     icon: <UIElementsIcon />,
     children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
+      {label: 'Statistics', link: '/app/surgery/statistics'},
+      {label: 'ASC/Hospital Acess', link: '/app/surgery/list'},
     ],
+  },
+  {
+    id: 5,
+    label: "State Coverage",
+    link: "/app/state-coverage",
+    icon: <MapIcon />,
+    children: [
+      {label: 'ASC', link: '/app/state-coverage/asc'},
+      {label: 'HOPD', link: '/app/state-coverage/hopd'},
+      {label: 'In-Patient', link: '/app/state-coverage/in-patient'},
+    ]
+  },
+  {
+    id: 6,
+    label: "Coalitions",
+    link: 'app/coalitions',
+    icon: <UIElementsIcon />
   }
 ];
 
@@ -65,7 +109,7 @@ function Sidebar({ location }) {
   // global
   var { isSidebarOpened } = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
-
+  isSidebarOpened = true;
   // local
   var [isPermanent, setPermanent] = useState(true);
 
