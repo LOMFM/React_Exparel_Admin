@@ -18,8 +18,20 @@ import Sidebar from "../Sidebar";
 import { useLayoutState } from "../../context/LayoutContext";
 import PatientLiveStatus from "../../pages/patientLiveStatus/patientLiveStatus";
 import PatientGlobalStatus from '../../pages/patientGlobalStatus/PatientGlobalStatus';
+
 import ASCPayerBasicPage from "../../pages/ascPayerPage/ASCPayerBasicPage";
 import TopASCPayerPage from "../../pages/ascPayerPage/topPayerPage";
+import ASCCommercialPlanPage from "../../pages/ascPayerPage/commericalPlanPage";
+import ASCMedicaidPlanPage from "../../pages/ascPayerPage/medicaidPlanPage";
+
+import HOPDPayerBasicPage from "../../pages/hopdPayerPage/payerBasicPage";
+import TopHOPDPayerPage from "../../pages/hopdPayerPage/topPayerPage";
+import HOPDCommercialPlanPage from "../../pages/hopdPayerPage/commericalPlanPage";
+import HOPDMedicaidPlanPage from "../../pages/hopdPayerPage/medicaidPlanPage";
+
+import DentalPayerBasicPage from "../../pages/dentalPayerPage/payerBasicPage";
+import TopDentalPayerPage from "../../pages/dentalPayerPage/topPayerPage";
+import DentalPlanPage from "../../pages/dentalPayerPage/planPage";
 
 function Layout(props) {
   var classes = useStyles();
@@ -43,16 +55,16 @@ function Layout(props) {
               <Route path="/app/out-patient/live-status" component={PatientLiveStatus} />
               <Route path="/app/asc-payer/basic" component={ASCPayerBasicPage} />
               <Route path="/app/asc-payer/top" component={TopASCPayerPage} />
-              <Route path="/app/asc-payer/commerical-plan" component={PatientLiveStatus} />
-              <Route path="/app/asc-payer/medicaid-plan" component={PatientLiveStatus} />
-              <Route path="/app/hopd-payer/basic" component={PatientLiveStatus} />
-              <Route path="/app/hopd-payer/top" component={PatientLiveStatus} />
-              <Route path="/app/hopd-payer/commerical-plan" component={PatientLiveStatus} />
-              <Route path="/app/hopd-payer/medicaid-plan" component={PatientLiveStatus} />
-              <Route path="/app/dental-payer/statistics" component={PatientLiveStatus} />
-              <Route path="/app/dental-payer/basic" component={PatientLiveStatus} />
-              <Route path="/app/dental-payer/top" component={PatientLiveStatus} />
-              <Route path="/app/dental-payer/commercial-plan" component={PatientLiveStatus} />
+              <Route path="/app/asc-payer/commerical-plan" component={ASCCommercialPlanPage} />
+              <Route path="/app/asc-payer/medicaid-plan" component={ASCMedicaidPlanPage} />
+              <Route path="/app/hopd-payer/basic" component={HOPDPayerBasicPage} />
+              <Route path="/app/hopd-payer/top" component={TopHOPDPayerPage} />
+              <Route path="/app/hopd-payer/commerical-plan" component={HOPDCommercialPlanPage} />
+              <Route path="/app/hopd-payer/medicaid-plan" component={HOPDMedicaidPlanPage} />
+              <Route path="/app/dental-payer/statistics" component={DentalPayerBasicPage} />
+              <Route path="/app/dental-payer/basic" component={DentalPayerBasicPage} />
+              <Route path="/app/dental-payer/top" component={TopDentalPayerPage} />
+              <Route path="/app/dental-payer/commercial-plan" component={DentalPlanPage} />
             </Switch>
           </div>
         </>

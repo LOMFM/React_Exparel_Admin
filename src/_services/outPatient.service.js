@@ -312,7 +312,7 @@ export default class OutPatientService{
         const { type, category } = basic;
         return new Promise((resolved, rejected) => {
             axios
-                .get(`${server}/api/exparel/edit-plans/${type}/${category}`, data)
+                .post(`${server}/api/exparel/edit-plans/${type}/${category}`, data)
                 .then((res) => {
                     resolved(res.data)
                 })

@@ -1,11 +1,5 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import MuiDialogContent from '@material-ui/core/DialogContent';
-import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import {
@@ -13,139 +7,161 @@ import {
     CircularProgress,
     TextField,
 } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
-const styles = theme => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
-});
+import '../../_styles/form.css'
 
-const DialogTitle = withStyles(styles)(props => {
-    const { children, classes, onClose } = props;
-    return (
-        <MuiDialogTitle disableTypography className={classes.root}>
-            <Typography variant="h6">{children}</Typography>
-            {onClose ? (
-                <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </MuiDialogTitle>
-    );
-});
+import OutPatientService from '../../_services/outPatient.service';
 
-const DialogContent = withStyles(theme => ({
-    root: {
-        padding: theme.spacing(2),
-    },
-}))(MuiDialogContent);
+export default class TopPayerForm extends Component {
 
-const DialogActions = withStyles(theme => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(1),
-    },
-}))(MuiDialogActions);
+    _serivce = new OutPatientService()
 
-export default function CustomizedDialogs() {
-    const [open, setOpen] = React.useState(false);
-    var { payer, lives, status, order } = React.useState();
+    constructor(props) {
+        super(props)
 
-    const onChangePayer = (e) => {
-        payer = e.target.value
+        this.state = {
+            coalition: '',
+            lives: 0,
+            status: 0,
+            order: 0,
+            id: ''
+        }
+
+        this.onChangeCoalition = this.onChangeCoalition.bind(this)
+        this.onChangeLives = this.onChangeLives.bind(this)
+        this.onChangeLiveStatus = this.onChangeLiveStatus.bind(this)
+        this.onChangeOrder = this.onChangeOrder.bind(this)
+        this.onFormSubmit = this.onFormSubmit.bind(this)
+
+        let payerArray = localStorage.getItem("payerArray");
+        this.payers = JSON.parse(payerArray);
     }
 
-    const onChangeLives = (e) => {
-        lives = e.target.value
+    prevProp = null
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.id != state.id) {
+            const { coalition, lives, order, status } = props.data;
+            return {
+                coalition: coalition,
+                lives: lives,
+                status: status,
+                order: order,
+                id: props.id
+            }
+        }
+        return null;
     }
 
-    const onChangeLiveStatus = (e) => {
-        status = e.target.value
+    onChangeCoalition = (e) => {
+        this.setState({
+            coalition: e.target.value
+        })
     }
 
-    const onChangeOrder = (e) => {
-        order = e.target.value
+    onChangeLives = (e) => {
+        this.setState({
+            lives: e.target.value
+        })
     }
 
-    const onFormSubmit = () => {
-        console.log( payer, lives, status, order );
+    onChangeLiveStatus = (e) => {
+        this.setState({
+            status: e.target.value
+        })
     }
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+    onChangeOrder = (e) => {
+        this.setState({
+            order: e.target.value
+        })
+    }
 
-    return (
-        <div>
-            <Button variant="outlined" color="secondary" onClick={handleClickOpen}>
-                Add Top Payer
-            </Button>
-            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-                    Top Payer
-                </DialogTitle>
-                <DialogContent dividers>
-                    <Grid>
-                        <Typography>Payer</Typography>
-                        <TextField
-                            id="medicare"
-                            value={payer}
-                            onChange={onChangePayer}
-                            margin="normal"
-                            placeholder="Payer"
-                            type="text"
-                            fullWidth
-                        />
-                        <Typography>Lives</Typography>
-                        <TextField
-                            id="live" 
-                            value={lives}
-                            onChange={onChangeLives}
-                            margin="normal"
-                            placeholder="Lives( million )"
-                            type="number"
-                            fullWidth
-                        />
-                        <Typography>Status (%)</Typography>
-                        <TextField
-                            id="status"
-                            value={status}
-                            onChange={onChangeLiveStatus}
-                            margin="normal"
-                            placeholder="Status"
-                            type="number"
-                            fullWidth
-                        />
+    onFormSubmit = () => {
+        if( !this.state._id ){
+            this._serivce.createTopPayer({ ...this.state, type: this.props.type})
+                .then((res) => {
+                    this.props.submit(res.data);
+                })
+                .catch(err => {
+                    
+                })
+        }
+        else {
+            this._serivce.updateTopPayer({ ...this.state, type: this.props.type}, this.state._id)
+                .then((res) => {
+                    this.props.submit(res.data);
+                })
+                .catch(err => {
 
-                        <Typography>Order</Typography>
-                        <TextField
-                            id="order"
-                            value={order} 
-                            onChange={onChangeOrder}
-                            margin="normal"
-                            placeholder="Order"
-                            type="number"
-                            max="10" 
-                            fullWidth
-                        />
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onFormSubmit} color="primary">
-                        Save changes
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
-    );
+                })
+        }
+        
+    }
+
+    payers = []
+
+    render() {
+        return (
+            <Grid>
+                <div className="form">
+                    <Typography>Payer</Typography>
+                    <Select
+                        value={this.state.coalition}
+                        onChange={this.onChangeCoalition}
+                        disabled={this.props.edit}
+                    >
+                        {this.payers.map((payer, index) => ( 
+                                    <MenuItem value={payer['_id']} key={index}>{payer['name']}</MenuItem>) 
+                        )}
+                    </Select>
+                    <div class="divider"></div>
+                    <Typography>Lives</Typography>
+                    <TextField
+                        id="live"
+                        value={this.state.lives}
+                        onChange={this.onChangeLives}
+                        margin="normal"
+                        placeholder="Lives( million )"
+                        type="number"
+                        fullWidth
+                    />
+                    <Typography>Status (%)</Typography>
+                    <TextField
+                        id="status"
+                        value={this.state.status}
+                        onChange={this.onChangeLiveStatus}
+                        margin="normal"
+                        placeholder="Status"
+                        type="number"
+                        max="100"
+                        fullWidth
+                    />
+
+                    <Typography>Order</Typography>
+                    <Select
+                        value={this.state.order}
+                        onChange={this.onChangeOrder}
+                    >
+                        <MenuItem value={1}>1st</MenuItem>
+                        <MenuItem value={2}>2nd</MenuItem>
+                        <MenuItem value={3}>3rd</MenuItem>
+                        <MenuItem value={4}>4th</MenuItem>
+                        <MenuItem value={5}>5th</MenuItem>
+                        <MenuItem value={6}>6th</MenuItem>
+                        <MenuItem value={7}>7th</MenuItem>
+                        <MenuItem value={8}>8th</MenuItem>
+                        <MenuItem value={9}>9th</MenuItem>
+                        <MenuItem value={10}>10th</MenuItem>
+                    </Select>
+                </div>
+                <div className="form-actions">
+                    <Button onClick={this.onFormSubmit} variant="contained" color="primary" size="large">Save</Button>
+                </div>
+            </Grid >
+        );
+    }
 }

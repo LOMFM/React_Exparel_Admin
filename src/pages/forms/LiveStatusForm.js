@@ -8,6 +8,7 @@ import {
     TextField,
 } from "@material-ui/core";
 import '../../_styles/card.css'
+import '../../_styles/form.css'
 
 
 import OutPatientService from '../../_services/outPatient.service';
@@ -95,7 +96,10 @@ export default class LiveStatusForm extends Component {
             <Grid>
                 <div className="card">
                     <h3 className="card-header">{this.props.title}</h3>
-                    <div className="card-body">
+                    <div className="card-body form-wrapper">
+                        {this.state.loading ? (
+                                <div className="form-loader"><CircularProgress size={60}/></div>
+                        ) : null }
                         <Typography>Medicare Lives(million)</Typography>
                         <TextField
                             id="medicare"
@@ -117,7 +121,7 @@ export default class LiveStatusForm extends Component {
                                 classes: {
                                 },
                             }}
-                            value={this.state.commericalLives}
+                            value={this.state.commercialLives}
                             onChange={this.onChangeCommercialLives}
                             margin="normal"
                             placeholder="Commercial Lives (million)"

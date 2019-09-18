@@ -9,6 +9,7 @@ import {
     Fade,
 } from "@material-ui/core";
 import '../../_styles/card.css'
+import '../../_styles/form.css'
 
 
 import OutPatientService from '../../_services/outPatient.service';
@@ -107,7 +108,10 @@ export default class ServiceStatusForm extends Component {
             <Grid>
                 <div className="card">
                     <h3 className="card-header">{this.props.title}</h3>
-                    <div className="card-body">
+                    <div className="card-body form-wrapper">
+                        {this.state.loading ? (
+                            <div className="form-loader"><CircularProgress size={60}/></div>
+                        ) : null }
                         <Typography>Total Lives(million)</Typography>
                         <TextField
                             id="total"

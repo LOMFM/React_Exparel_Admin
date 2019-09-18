@@ -9,6 +9,7 @@ import {
   Menu as MenuIcon,
   Person as AccountIcon,
   ArrowBack as ArrowBackIcon,
+  Add as AddIcon
 } from "@material-ui/icons";
 import classNames from "classnames";
 
@@ -17,6 +18,8 @@ import useStyles from "./styles";
 
 // components
 import { Typography } from "../Wrappers/Wrappers";
+import Modal from '../../pages/components/modal';
+import PayerForm from '../../pages/forms/payerForm';
 
 // context
 import {
@@ -25,6 +28,7 @@ import {
   toggleSidebar,
 } from "../../context/LayoutContext";
 import { useUserDispatch, signOut } from "../../context/UserContext";
+import { register } from "../../serviceWorker";
 
 export default function Header(props) {
   var classes = useStyles();
@@ -36,6 +40,7 @@ export default function Header(props) {
 
   // local
   var [profileMenu, setProfileMenu] = useState(null);
+  var [registerPayer, openRegisterPayer] = useState(null);
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -71,6 +76,17 @@ export default function Header(props) {
         <Typography variant="h6" weight="medium" className={classes.logotype}>
           Exparel Admin
         </Typography>
+        
+        <IconButton
+          aria-haspopup="true"
+          color="inherit"
+          className={classes.addMenu}
+          aria-controls="profile-menu"
+          onClick={e => openRegisterPayer(e)}
+        >
+          <AddIcon classes={{ root: classes.addIcon }} />
+          <span className="">New Payer</span>
+        </IconButton>
         <div className={classes.grow} />
         <IconButton
           aria-haspopup="true"
@@ -115,6 +131,9 @@ export default function Header(props) {
           </div>
         </Menu>
       </Toolbar>
+            <Modal show={Boolean(registerPayer)} class={'small'} onClose={() => openRegisterPayer(null)}>
+                <PayerForm submit={() => openRegisterPayer(null)}></PayerForm>
+            </Modal>
     </AppBar>
   );
 }

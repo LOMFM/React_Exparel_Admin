@@ -70,7 +70,7 @@ const structure = [
       {label: 'Statistics', link: '/app/dental-payer/statistics'},
       {label: 'Basic Information', link: '/app/dental-payer/basic'},
       {label: 'Top 10 Payer', link: '/app/dental-payer/top'},
-      {label: 'Plans', link: '/app/dental-payer/commerical-plan'},
+      {label: 'Plans', link: '/app/dental-payer/commercial-plan'},
     ]
   },
   {

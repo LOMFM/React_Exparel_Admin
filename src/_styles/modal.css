@@ -1,0 +1,5 @@
+.small.modal{
+    max-width: 400px!important;
+    border-radius: 2px!important;
+    min-height: unset!important;
+}

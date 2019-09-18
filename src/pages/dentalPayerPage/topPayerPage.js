@@ -12,7 +12,7 @@ import OutPatientService from '../../_services/outPatient.service';
 import TopPayerForm from '../forms/topPayerForm';
 import Modal from '../components/modal';
 
-export default class TopASCPayerPage extends Component {
+export default class TopDentalPayerPage extends Component {
 
     _service = new OutPatientService
 
@@ -39,7 +39,7 @@ export default class TopASCPayerPage extends Component {
 
     componentDidMount() {
         this.setState({ loading: true })
-        this._service.getTopPayers('asc')
+        this._service.getTopPayers('dental')
             .then(res => {
                 this.state.data = res.data;
                 this.setState({ loading: false })
@@ -88,7 +88,7 @@ export default class TopASCPayerPage extends Component {
                         <Button onClick={this.toggleModal} variant="contained" size="small" color="primary">Save</Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Widget title="Top Ten Commercial Payer ASC Coverage" upperTitle noBodyPadding>
+                        <Widget title="Top Ten Commercial Payer Dental Coverage" upperTitle noBodyPadding>
                             <Table className="mb-0">
                                 <TableHead>
                                     <TableRow>
@@ -116,7 +116,7 @@ export default class TopASCPayerPage extends Component {
                     </Grid>
                 </Grid>
                 { this.state.isOpen ? (<Modal show={this.state.isOpen} onClose={this.toggleModal} class={'small'} title={ this.index !== -1 ? "Edit Top Payer" : "New Top Payer" }>
-                    <TopPayerForm data={ this.index !== -1 ? this.state.data[this.index]: { coalition:'', lives: 0, status: 0, order: 1}} id={this.index !== -1 ? this.state.data[this.index]['_id']: null} submit={(data) => this.editData(data)} type={'asc'} edit={this.index >= 0 ? true : false}></TopPayerForm>
+                    <TopPayerForm data={ this.index !== -1 ? this.state.data[this.index]: { coalition:'', lives: 0, status: 0, order: 1}} id={this.index !== -1 ? this.state.data[this.index]['_id']: null} submit={(data) => this.editData(data)} type={'dental'} edit={this.index >= 0 ? true : false}></TopPayerForm>
                 </Modal> ) : ''}
             </>
         )

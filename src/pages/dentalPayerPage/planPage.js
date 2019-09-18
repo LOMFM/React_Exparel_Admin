@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Button } from "@material-ui/core";
-import Widget from "../../components/Widget";
+import Widget from "../../components/Widget/Widget";
 import {
     Table,
     TableRow,
@@ -9,16 +9,19 @@ import {
     TableCell,
 } from "@material-ui/core";
 import OutPatientService from '../../_services/outPatient.service';
-import TopPayerForm from '../forms/topPayerForm';
 import Modal from '../components/modal';
+import TotalPlanForm from '../forms/totalPlanForm';
+import PlanForm from '../forms/planForm';
 
-export default class TopASCPayerPage extends Component {
+export default class DentalPlanPage extends Component {
 
     _service = new OutPatientService
 
-    keys = ["Payer/PBM", "# of lives", "Status", "Action"]
-    index = -1
+    keys = ["Payer/PBM", "# of plans", "Status", "Action"]
     payers = {}
+
+    planToEdit = {}
+    editFlag = false
     constructor() {
         super()
         this.state = {
@@ -33,13 +36,12 @@ export default class TopASCPayerPage extends Component {
         this.toggleModal = this.toggleModal.bind(this)
         this.editData = this.editData.bind(this)
 
-        this.payers = JSON.parse(localStorage.getItem('payers'))
-        console.log(this.payers);
+        this.payers = JSON.parse(localStorage.getItem('payers'));
     }
 
     componentDidMount() {
         this.setState({ loading: true })
-        this._service.getTopPayers('asc')
+        this._service.getPayerPlans({type: 'dental', category: "commercial"})
             .then(res => {
                 this.state.data = res.data;
                 this.setState({ loading: false })
@@ -59,36 +61,50 @@ export default class TopASCPayerPage extends Component {
         })
     }
 
-    openEditor(index) {
-        this.index = index;
+    openEditor(data) {
+        this.planToEdit = data
+        this.editFlag = true
         this.setState({
             isOpen: true
         })
     }
 
     editData(data) {
-        if( this.index == -1 ){
-            this.state.data.push(data)
+        // if( this.index == -1 ){
+        //     this.state.data.push(data)
+        // }
+        // else {
+        //     this.state.data[this.index] = data
+        // }
+        if( this.editFlag ){
+            this.state.data.forEach(e => {
+                if( e._id == data._id ){
+                    const {coalition, plan, status} = data
+                    e.coalition = coalition;
+                    e.plan = plan
+                    e.status = status
+                }
+            })
         }
         else {
-            this.state.data[this.index] = data
+            this.state.data.push(data)
         }
+        this.editFlag = false
+        
         this.setState({
             isOpen: false
         })
     }
-
-    
 
     render() {
         return (
             <>
                 <Grid container spacing={4} >
                     <Grid item xs={12}>
-                        <Button onClick={this.toggleModal} variant="contained" size="small" color="primary">Save</Button>
+                        <Button onClick={this.toggleModal} variant="contained" size="small" color="primary">Add</Button>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Widget title="Top Ten Commercial Payer ASC Coverage" upperTitle noBodyPadding>
+                    <Grid item xs={12} md={10} lg={9}>
+                        <Widget title="Plan Lists" upperTitle noBodyPadding>
                             <Table className="mb-0">
                                 <TableHead>
                                     <TableRow>
@@ -98,25 +114,28 @@ export default class TopASCPayerPage extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state && this.state.data && this.state.data.length ? (this.state.data.map(({ _id, coalition, lives, status }, index) => (
+                                    {this.state && this.state.data && this.state.data.length ? (this.state.data.map((data, index) => (
                                         <TableRow key={index}>
-                                            <TableCell className="pl-3 fw-normal">{this.payers[coalition]}</TableCell>
-                                            <TableCell>{lives}</TableCell>
-                                            <TableCell>{status} %</TableCell>
+                                            <TableCell className="pl-3 fw-normal">{this.payers[data.coalition]}</TableCell>
+                                            <TableCell>{data.plan}</TableCell>
+                                            <TableCell>{data.status} %</TableCell>
                                             <TableCell>
-                                                <Button onClick={() => this.openEditor(index)} variant="contained" color="primary" size="small">Edit</Button>
+                                                <Button onClick={() => this.openEditor(data)} variant="contained" color="primary" size="small">Edit</Button>
                                             </TableCell>
                                         </TableRow>
                                     ))) : (<TableRow >
-                                        <TableCell colSpan="4" style={centerStyle}>There is no Data</TableCell>
+                                        <TableCell colSpan="8" style={centerStyle}>There is no Data</TableCell>
                                     </TableRow>)}
                                 </TableBody>
                             </Table>
                         </Widget>
                     </Grid>
+                    <Grid item xs={12} md={2} lg={3}>
+                        <TotalPlanForm basic={{type: 'dental', category: 'commercial'}}></TotalPlanForm>
+                    </Grid>
                 </Grid>
-                { this.state.isOpen ? (<Modal show={this.state.isOpen} onClose={this.toggleModal} class={'small'} title={ this.index !== -1 ? "Edit Top Payer" : "New Top Payer" }>
-                    <TopPayerForm data={ this.index !== -1 ? this.state.data[this.index]: { coalition:'', lives: 0, status: 0, order: 1}} id={this.index !== -1 ? this.state.data[this.index]['_id']: null} submit={(data) => this.editData(data)} type={'asc'} edit={this.index >= 0 ? true : false}></TopPayerForm>
+                { this.state.isOpen ? (<Modal show={this.state.isOpen} onClose={this.toggleModal} class={'small'} title={ this.index !== -1 ? "Edit Payer Plan Data" : "New Payer Plan Data" }>
+                    <PlanForm data={this.planToEdit}  basic={{type: 'dental', category: 'commercial'}} submit={(data) => this.editData(data)} edit={this.editFlag} dental={true}></PlanForm>
                 </Modal> ) : ''}
             </>
         )

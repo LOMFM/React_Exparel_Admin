@@ -11,9 +11,26 @@ import Login from "../pages/login";
 // context
 import { useUserState } from "../context/UserContext";
 
+import OutPatientService from '../_services/outPatient.service';
+
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
+
+  var _service = new OutPatientService;
+
+  _service.getPayers()
+    .then((res) => {
+      let payers = {}
+      res.data.forEach((e) => {
+        payers[e._id] = e.name
+      })
+      localStorage.setItem("payers", JSON.stringify(payers));
+      localStorage.setItem("payerArray", JSON.stringify(res.data));
+    })
+    .catch((err) => {
+
+    })
 
   return (
     <HashRouter>

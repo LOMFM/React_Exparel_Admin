@@ -102,6 +102,21 @@ export default makeStyles(theme => ({
   headerMenuButtonCollapse: {
     marginRight: 0,
   },
+  addMenu: {
+    background: "white",
+    borderRadius: 3,
+    height: 32,
+    fontSize: 16,
+    color: "black",
+    padding: 0,
+    paddingLeft: 8,
+    paddingRight: 8,
+    lineHeight: "32px",
+    marginLeft: 16
+  },
+  addIcon: {
+    color: "black",
+  },
   headerIcon: {
     fontSize: 28,
     color: "rgba(255, 255, 255, 0.35)",
