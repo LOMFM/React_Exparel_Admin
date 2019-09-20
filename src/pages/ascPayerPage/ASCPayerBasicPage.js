@@ -24,7 +24,7 @@ export default class ASCPayerBasicPage extends Component {
                 </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6} lg={4}>
-                        <TotalStatusForm title="Percent of Total" basic={{page: 'ascPayer', category: ''}} select={['asc']}></TotalStatusForm>
+                        <TotalStatusForm title="Percent of Total" basic={{page: 'ascPayer', category: '', type: ''}} select={['asc']}></TotalStatusForm>
                     </Grid>
                 </Grid>
                 <Grid container spacing={4}>

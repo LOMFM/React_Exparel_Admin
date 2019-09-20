@@ -24,7 +24,7 @@ export default class DentalPayerBasic extends Component {
                 </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6} lg={4}>
-                        <TotalStatusForm title="Percent of Total" basic={{page: 'dentalPayer', category: ''}} select={['dental']}></TotalStatusForm>
+                        <TotalStatusForm title="Percent of Total" basic={{page: 'dentalPayer', category: '', type: ''}} select={['dental']}></TotalStatusForm>
                     </Grid>
                 </Grid>
                 <Grid container spacing={4}>

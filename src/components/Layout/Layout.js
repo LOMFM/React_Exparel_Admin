@@ -32,6 +32,7 @@ import HOPDMedicaidPlanPage from "../../pages/hopdPayerPage/medicaidPlanPage";
 import DentalPayerBasicPage from "../../pages/dentalPayerPage/payerBasicPage";
 import TopDentalPayerPage from "../../pages/dentalPayerPage/topPayerPage";
 import DentalPlanPage from "../../pages/dentalPayerPage/planPage";
+import DentalPayerStatisticsPage from "../../pages/dentalPayerPage/payerStatisticsPage";
 
 function Layout(props) {
   var classes = useStyles();
@@ -61,7 +62,7 @@ function Layout(props) {
               <Route path="/app/hopd-payer/top" component={TopHOPDPayerPage} />
               <Route path="/app/hopd-payer/commerical-plan" component={HOPDCommercialPlanPage} />
               <Route path="/app/hopd-payer/medicaid-plan" component={HOPDMedicaidPlanPage} />
-              <Route path="/app/dental-payer/statistics" component={DentalPayerBasicPage} />
+              <Route path="/app/dental-payer/statistics" component={DentalPayerStatisticsPage} />
               <Route path="/app/dental-payer/basic" component={DentalPayerBasicPage} />
               <Route path="/app/dental-payer/top" component={TopDentalPayerPage} />
               <Route path="/app/dental-payer/commercial-plan" component={DentalPlanPage} />

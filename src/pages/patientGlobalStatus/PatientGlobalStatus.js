@@ -38,16 +38,16 @@ export default class PatientGlobalStatus extends Component {
                 </Grid>
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Medicare Total" basic={{page: 'patient', category: 'medicare'}} select={['asc', 'hopd']}></TotalStatusForm>
+                        <TotalStatusForm title="Medicare Total" basic={{page: 'patient', category: 'medicare', type: ''}} select={['asc', 'hopd']}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Commercial Total" basic={{page: 'patient', category: 'commercial'}} select={['asc', 'hopd']}></TotalStatusForm>
+                        <TotalStatusForm title="Commercial Total" basic={{page: 'patient', category: 'commercial', type: ''}} select={['asc', 'hopd']}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="Medicaid Total" basic={{page: 'patient', category: 'medicaid'}} select={['asc', 'hopd']}></TotalStatusForm>
+                        <TotalStatusForm title="Medicaid Total" basic={{page: 'patient', category: 'medicaid', type: ''}} select={['asc', 'hopd']}></TotalStatusForm>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3}>
-                        <TotalStatusForm title="VA/DOD Total" basic={{page: 'patient', category: 'va'}} select={['asc', 'hopd']}></TotalStatusForm>
+                        <TotalStatusForm title="VA/DOD Total" basic={{page: 'patient', category: 'va', type: ''}} select={['asc', 'hopd']}></TotalStatusForm>
                     </Grid>
                 </Grid>
             </>
