@@ -6,8 +6,8 @@ export default makeStyles(theme => ({
     "&:hover, &:focus": {
       backgroundColor: theme.palette.background.light,
     },
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
+    paddingTop: theme.spacing(0.25),
+    paddingBottom: theme.spacing(0.25),
   },
   linkActive: {
     backgroundColor: theme.palette.background.light,

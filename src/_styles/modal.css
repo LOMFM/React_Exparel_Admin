@@ -3,3 +3,11 @@
     border-radius: 2px!important;
     min-height: unset!important;
 }
+
+.backdrop{
+    overflow: auto;
+}
+
+.modal h2{
+    margin-top: 0px;
+}

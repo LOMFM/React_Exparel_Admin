@@ -96,9 +96,14 @@ const structure = [
   },
   {
     id: 6,
-    label: "Coalitions",
-    link: 'app/coalitions',
-    icon: <UIElementsIcon />
+    label: "Payers",
+    link: 'app/payers',
+    icon: <UIElementsIcon />,
+    children: [
+      {label: 'ASC', link: '/app/payers/asc'},
+      {label: 'HOPD', link: '/app/payers/hopd'},
+      {label: 'Dental', link: '/app/payers/dental'},
+    ]
   }
 ];
 
