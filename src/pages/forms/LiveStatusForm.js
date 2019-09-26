@@ -57,13 +57,17 @@ export default class LiveStatusForm extends Component {
         this._service.saveOneLiveStatus(data, this.props.basic.type)
             .then((res) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    isCompleted: true
                 })
+                setTimeout(() => { this.setState({isCompleted: false})}, 3000)
             })
             .catch((err) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    hasError: true
                 })
+                setTimeout(() => { this.setState({hasError: false})}, 3000)
             })
     }
 
@@ -156,6 +160,14 @@ export default class LiveStatusForm extends Component {
                             type="number"
                             fullWidth
                         />
+                        {
+                            this.state.isCompleted ? 
+                            (<div className="succeed">The data is Saved.</div>): ''
+                        }
+                        {
+                            this.state.hasError ?
+                            (<div className="error">The data is not saved.</div>) : ''
+                        }
                         {this.state.submitting ? (
                             <div className="loader"><CircularProgress size={26}/></div>
                         ) : (

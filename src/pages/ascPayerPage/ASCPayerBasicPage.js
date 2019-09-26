@@ -8,11 +8,7 @@ import LiveStatusForm from '../forms/LiveStatusForm';
 
 export default class ASCPayerBasicPage extends Component {
 
-    _service = new OutPatientService
-
-    constructor() {
-        super()
-    }
+    _service = new OutPatientService();
 
     render() {
         return (

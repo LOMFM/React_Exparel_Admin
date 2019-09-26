@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
 import { Grid } from "@material-ui/core";
 
-import OutPatientService from '../../_services/outPatient.service';
 import ServiceStatusForm from '../forms/ServiceStatusForm';
 import TotalStatusForm from '../forms/TotalStatusForm';
 import LiveStatusForm from '../forms/LiveStatusForm';
 
 export default class HOPDPayerBasicPage extends Component {
-
-    _service = new OutPatientService
-
-    constructor() {
-        super()
-    }
 
     render() {
         return (

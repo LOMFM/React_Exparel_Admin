@@ -26,17 +26,17 @@ export default class TotalPlanForm extends Component {
         this.onFormSubmit = this.onFormSubmit.bind(this)
     }
 
-    componentDidMount(){
-        this.setState({loading: true})
+    componentDidMount() {
+        this.setState({ loading: true })
         this._serivce.getTotalPlan(this.props.basic)
-            .then( res => {
-                for( let key in res.data ){
+            .then(res => {
+                for (let key in res.data) {
                     this.state[key] = res.data[key]
                 }
-                this.setState({loading: false})
+                this.setState({ loading: false })
             })
-            .catch( err => {    
-                this.setState({loading: false})
+            .catch(err => {
+                this.setState({ loading: false })
             })
     }
 
@@ -54,15 +54,17 @@ export default class TotalPlanForm extends Component {
 
     onFormSubmit = () => {
         this.setState({
-            submitting : true
+            submitting: true
         })
-        this._serivce.saveTotalPlan({ ...this.state}, {...this.props.basic })
+        this._serivce.saveTotalPlan({ ...this.state }, { ...this.props.basic })
             .then((res) => {
-                this.setState({ submitting: false})
+                this.setState({ submitting: false })                
                 this.props.submit(res.data);
+                setTimeout(() => {this.setState({isCompleted: false})}, 3000)
             })
             .catch(err => {
                 this.setState({ submitting: false})
+                setTimeout(() => {this.setState({hasError: false})}, 3000)
             })
     }
 
@@ -70,8 +72,8 @@ export default class TotalPlanForm extends Component {
         return (
             <Grid className="form-wrapper">
                 {this.state.loading ? (
-                    <div className="form-loader"><CircularProgress size={60}/></div>
-                ) : null }
+                    <div className="form-loader"><CircularProgress size={60} /></div>
+                ) : null}
                 <div className="form">
                     <Typography>Total Plans</Typography>
                     <TextField
@@ -79,7 +81,7 @@ export default class TotalPlanForm extends Component {
                         value={this.state.total}
                         onChange={this.onChangeTotal}
                         margin="normal"
-                        placeholder="Toal Plans"
+                        placeholder="Total Plans"
                         type="number"
                         fullWidth
                     />
@@ -95,10 +97,18 @@ export default class TotalPlanForm extends Component {
                         fullWidth
                     />
                 </div>
+                {
+                    this.state.isCompleted ?
+                        (<div className="succeed">The data is Saved.</div>) : ''
+                }
+                {
+                    this.state.hasError ?
+                        (<div className="error">The data is not saved.</div>) : ''
+                }
                 <div className="form-actions">
                     {this.state.submitting ? (
-                            <div className="loader"><CircularProgress size={26}/></div>
-                        ) : (
+                        <div className="loader"><CircularProgress size={26} /></div>
+                    ) : (
                             <Button onClick={this.onFormSubmit} variant="contained" color="primary" size="large">Save</Button>
                         )}
                 </div>

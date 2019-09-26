@@ -7,6 +7,7 @@ import {
     TableHead,
     TableBody,
     TableCell,
+    CircularProgress
 } from "@material-ui/core";
 import OutPatientService from '../../_services/outPatient.service';
 import Modal from '../components/modal';
@@ -116,7 +117,12 @@ export default class ASCCommercialPlanPage extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state && this.state.data && this.state.data.length ? (this.state.data.map((data, index) => (
+                                    {
+                                        this.state.loading ? 
+                                        <TableRow><TableCell colSpan="8" className="loader-cell"><div className="form-loader"><CircularProgress size={60}/></div></TableCell></TableRow>
+                                        : ''
+                                    }
+                                    {this.state && this.state.data && this.state.data.length && !this.state.loading ? (this.state.data.map((data, index) => (
                                         <TableRow key={index}>
                                             <TableCell className="pl-3 fw-normal">{this.payers[data.coalition]}</TableCell>
                                             <TableCell>{data.plan}</TableCell>
@@ -130,6 +136,7 @@ export default class ASCCommercialPlanPage extends Component {
                                     ))) : (<TableRow >
                                         <TableCell colSpan="8" style={centerStyle}>There is no Data</TableCell>
                                     </TableRow>)}
+                                    
                                 </TableBody>
                             </Table>
                         </Widget>

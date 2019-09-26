@@ -62,13 +62,17 @@ export default class TotalStatusForm extends Component {
         this._service.saveOneTotalStatus(data, this.props.basic.page)
             .then((res) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    isCompleted: true
                 })
+                setTimeout( () => { this.setState({ isCompleted: false }) }, 3000 );
             })
             .catch((err) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    hasError: true
                 })
+                setTimeout( () => { this.setState({ hasError: false }) }, 3000 );
             })
     }
 
@@ -79,6 +83,7 @@ export default class TotalStatusForm extends Component {
     }
 
     onChangeASC(e) {
+
         this.setState({
             asc: e.target.value
         })
@@ -174,7 +179,14 @@ export default class TotalStatusForm extends Component {
                                 />
                             </>    
                         ): ''}
-                        
+                        {
+                            this.state.isCompleted ? 
+                            (<div className="succeed">The data is Saved.</div>): ''
+                        }
+                        {
+                            this.state.hasError ?
+                            (<div className="error">The data is not saved.</div>) : ''
+                        }
                         {this.state.submitting ? (
                             <div className="loader"><CircularProgress size={26}/></div>
                         ) : (

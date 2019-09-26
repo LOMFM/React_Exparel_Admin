@@ -1,0 +1,24 @@
+.succeed{
+    background: lightgreen;
+    padding: 3px 5px;
+    border-radius: 3px;
+    border: 1px solid #2eda2e;
+    text-align: center;
+}
+.error{
+    background: pink;
+    padding: 3px 5px;
+    border-radius: 3px;
+    border: 1px solid violet;
+    text-align: center;
+}
+td{
+    position: relative;
+}
+.loader-cell{
+    height: 130px;
+}
+.loader-cell .form-loader{
+    margin: 0px;
+    top: 10px;
+}

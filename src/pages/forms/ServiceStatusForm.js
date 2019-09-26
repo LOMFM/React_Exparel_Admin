@@ -69,13 +69,17 @@ export default class ServiceStatusForm extends Component {
         this._service.saveOneActiveStatus(data, this.props.basic.page)
             .then((res) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    isCompleted: true,
                 })
+                setTimeout( () => { this.setState({ isCompleted: false }) }, 3000 );
             })
             .catch((err) => {
                 this.setState({
-                    submitting: false
+                    submitting: false,
+                    hasError: true
                 })
+                setTimeout( () => { this.setState({ hasError: false }) }, 3000 );
             })
     }
 
@@ -87,19 +91,22 @@ export default class ServiceStatusForm extends Component {
 
     onChangeActive(e) {
         this.setState({
-            active: e.target.value
+            active: e.target.value,
+            deactive: 100 - e.target.value - ( this.state.pending || 0 )
         })
     }
 
     onChangePending(e) {
         this.setState({
-            pending: e.target.value
+            pending: e.target.value,
+            deactive: 100 - e.target.value - ( this.state.active || 0 )
         })
     }
 
     onChangeDeactive(e) {
         this.setState({
-            deactive: e.target.value
+            deactive: e.target.value,
+            pending: 100 - e.target.value - ( this.state.active || 0 )
         })
     }
 
@@ -168,6 +175,14 @@ export default class ServiceStatusForm extends Component {
                             type="number"
                             fullWidth
                         />
+                        {
+                            this.state.isCompleted ? 
+                            (<div className="succeed">The data is Saved.</div>): ''
+                        }
+                        {
+                            this.state.hasError ?
+                            (<div className="error">The data is not saved.</div>) : ''
+                        }
                         {this.state.submitting ? (
                             <div className="loader"><CircularProgress size={26}/></div>
                         ) : (
