@@ -71,7 +71,7 @@ export default class DetailForm extends Component {
         var { type, coalition, state, active, pending, inactive, 
             effective_date, confirmed_flag, medicare_flag, medicaid_flag, medicaid_plan,
             medicaid_active_plan, medicaid_inactive_plan, medicaid_pending_plan,
-            commercial_flag, commercial_active_plan, commercial_inactive_plan, commercial_pending_plan,
+            commercial_flag, commercial_plan, commercial_active_plan, commercial_inactive_plan, commercial_pending_plan,
             work_flag, reimbursement, comment, criteria, coverage_policy} = this.props.data;
         let confirm_flag = false;
         let effect_date
@@ -154,6 +154,7 @@ export default class DetailForm extends Component {
             medicaid_pending_plan: medicaid_pending_plan,
             commercial_flag_tbd: commercial_flag_tbd,
             commercial_flag: commercial_flag,
+            commercial_plan: commercial_plan,
             commercial_active_plan: commercial_active_plan, 
             commercial_inactive_plan: commercial_inactive_plan, 
             commercial_pending_plan: commercial_pending_plan,
@@ -182,7 +183,7 @@ export default class DetailForm extends Component {
                 detailData.effective_date = 'Confirmed ' + this.state.effective_date
             }
             else{
-                detailData.effective_date = this.state.effective_date
+                detailData.effective_date = this.state.effective_date + ''
             }
         }
         if( this.state.medicare_flag_tbd ){

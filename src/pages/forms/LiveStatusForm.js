@@ -162,7 +162,7 @@ export default class LiveStatusForm extends Component {
                         />
                         {
                             this.state.isCompleted ? 
-                            (<div className="succeed">The data is Saved.</div>): ''
+                            (<div className="succeed">The data is saved.</div>): ''
                         }
                         {
                             this.state.hasError ?

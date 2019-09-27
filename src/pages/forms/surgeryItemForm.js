@@ -16,7 +16,7 @@ import '../../_styles/card.css'
 
 import OutPatientService from '../../_services/outPatient.service';
 
-export default class PlanForm extends Component {
+export default class SurgeryItemForm extends Component {
 
     _service = new OutPatientService;
 
@@ -170,6 +170,6 @@ export default class PlanForm extends Component {
     }
 }
 
-PlanForm.propTypes = {
+SurgeryItemForm.propTypes = {
     submit: PropTypes.func
 }

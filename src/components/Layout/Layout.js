@@ -37,6 +37,8 @@ import DentalPayerStatisticsPage from "../../pages/dentalPayerPage/payerStatisti
 import ASCPayerListPage from '../../pages/payerDetailPage/ascPayerListPage';
 import HOPDPayerListPage from '../../pages/payerDetailPage/hopdPayerListPage';
 import DentalPayerListPage from '../../pages/payerDetailPage/dentalPayerListPage';
+import SurgeryCenterPage from "../../pages/surgeryPage/surgeryCenter";
+import SurgeryListPage from "../../pages/surgeryPage/surgeryList";
 
 function Layout(props) {
   var classes = useStyles();
@@ -73,6 +75,8 @@ function Layout(props) {
               <Route path="/app/payers/asc" component={ASCPayerListPage} />
               <Route path="/app/payers/hopd" component={HOPDPayerListPage} />
               <Route path="/app/payers/dental" component={DentalPayerListPage} />
+              <Route path="/app/surgery/statistics" component={SurgeryCenterPage} />
+              <Route path="/app/surgery/list" component={SurgeryListPage} />
             </Switch>
           </div>
         </>

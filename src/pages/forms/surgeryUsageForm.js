@@ -2,17 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
     Grid,
-    Typography,
     CircularProgress,
+    Typography,
     Button,
     TextField,
+    Fade,
 } from "@material-ui/core";
 import '../../_styles/card.css'
 import '../../_styles/form.css'
 
+
 import OutPatientService from '../../_services/outPatient.service';
 
-export default class TotalStatusForm extends Component {
+export default class SurgeryUsageForm extends Component {
 
     _service = new OutPatientService;
 
@@ -20,21 +22,20 @@ export default class TotalStatusForm extends Component {
         super(props)
         this.state = {
             total: 0,
-            asc: 0,
-            hopd: 0,
+            active: 0,
+            deactive: 100
         }
         this.formSubmit = this.formSubmit.bind(this)
         this.onChangeTotal = this.onChangeTotal.bind(this)
-        this.onChangeASC = this.onChangeASC.bind(this)
-        this.onChangeHOPD = this.onChangeHOPD.bind(this)
-        this.onChangeDental = this.onChangeDental.bind(this)
+        this.onChangeActive = this.onChangeActive.bind(this)
+        this.onChangeDeactive = this.onChangeDeactive.bind(this)
     }
 
     componentDidMount() {
         this.setState({
             loading: true
         })
-        this._service.getOneTotalStatus(this.props.basic)
+        this._service.getOneActiveStatus({page: 'surgery', category: '', type: this.props.type})
             .then((data) => {
                 for( let key in data.data ){
                     this.state[key] = data.data[key]
@@ -50,20 +51,26 @@ export default class TotalStatusForm extends Component {
             })
     }
 
+    componentWillMount(){
+        
+    }
+
     formSubmit(e) {
         e.preventDefault()
         const data = {
-            ...this.props.basic,
+            page: 'surgery',
+            category: '',
+            type: this.props.type,
             ...this.state
         }
         this.setState({
             submitting: true
         })
-        this._service.saveOneTotalStatus(data, this.props.basic.page)
+        this._service.saveOneActiveStatus(data, 'surgery')
             .then((res) => {
                 this.setState({
                     submitting: false,
-                    isCompleted: true
+                    isCompleted: true,
                 })
                 setTimeout( () => { this.setState({ isCompleted: false }) }, 3000 );
             })
@@ -82,22 +89,17 @@ export default class TotalStatusForm extends Component {
         })
     }
 
-    onChangeASC(e) {
-
+    onChangeActive(e) {
         this.setState({
-            asc: e.target.value
+            active: e.target.value,
+            deactive: 100 - e.target.value - ( this.state.pending || 0 )
         })
     }
 
-    onChangeHOPD(e) {
+    onChangeDeactive(e) {
         this.setState({
-            hopd: e.target.value
-        })
-    }
-
-    onChangeDental(e){
-        this.setState({
-            dental: e.target.value
+            deactive: e.target.value,
+            pending: 100 - e.target.value - ( this.state.active || 0 )
         })
     }
 
@@ -110,7 +112,7 @@ export default class TotalStatusForm extends Component {
                         {this.state.loading ? (
                             <div className="form-loader"><CircularProgress size={60}/></div>
                         ) : null }
-                        <Typography>Total Lives(million)</Typography>
+                        <Typography>Total</Typography>
                         <TextField
                             id="total"
                             InputProps={{
@@ -120,65 +122,38 @@ export default class TotalStatusForm extends Component {
                             value={this.state.total}
                             onChange={this.onChangeTotal}
                             margin="normal"
-                            placeholder="Total Lives( million )"
+                            placeholder="Total"
                             type="number"
                             fullWidth
                         />
-                        
-                        {this.props.select && this.props.select.indexOf('asc') !== -1 ? (
-                            <>
-                            <Typography>ASC (%)</Typography>
-                            <TextField
-                            id="ASC"
+                        <Typography>Allowable use(%)</Typography>
+                        <TextField
+                            id="active"
                             InputProps={{
                                 classes: {
                                 },
                             }}
-                            value={this.state.asc}
-                            onChange={this.onChangeASC}
+                            value={this.state.active}
+                            onChange={this.onChangeActive}
                             margin="normal"
-                            placeholder="ASC(%)"
+                            placeholder="Allowable use(%)"
                             type="number"
                             fullWidth
                         />
-                        </>
-                        ) : ''}
-                        {this.props.select && this.props.select.indexOf('hopd') !== -1 ? (
-                            <>
-                                <Typography>HOPD (%)</Typography>
-                                <TextField
-                                    id="HOPD"
-                                    InputProps={{
-                                        classes: {
-                                        },
-                                    }}
-                                    value={this.state.hopd}
-                                    onChange={this.onChangeHOPD}
-                                    margin="normal"
-                                    placeholder="HOPD(%)"
-                                    type="number"
-                                    fullWidth
-                                />
-                            </>    
-                        ): ''}
-                        {this.props.select && this.props.select.indexOf('dental') !== -1 ? (
-                            <>
-                                <Typography>Dental (%)</Typography>
-                                <TextField
-                                    id="Dental"
-                                    InputProps={{
-                                        classes: {
-                                        },
-                                    }}
-                                    value={this.state.dental}
-                                    onChange={this.onChangeDental}
-                                    margin="normal"
-                                    placeholder="Dental(%)"
-                                    type="number"
-                                    fullWidth
-                                />
-                            </>    
-                        ): ''}
+                        <Typography>No access (%)</Typography>
+                        <TextField
+                            id="deactive"
+                            InputProps={{
+                                classes: {
+                                },
+                            }}
+                            value={this.state.deactive}
+                            onChange={this.onChangeDeactive}
+                            margin="normal"
+                            placeholder="No access(%)"
+                            type="number"
+                            fullWidth
+                        />
                         {
                             this.state.isCompleted ? 
                             (<div className="succeed">The data is saved.</div>): ''
@@ -193,7 +168,7 @@ export default class TotalStatusForm extends Component {
                                 <Button
                                     onClick={this.formSubmit}
                                     variant="contained"
-                                    color="warning"
+                                    color="primary"
                                     size="large"
                                 >
                                     Save
@@ -204,14 +179,4 @@ export default class TotalStatusForm extends Component {
             </Grid>
         )
     }
-}
-
-TotalStatusForm.propTypes = {
-    basic: PropTypes.shape({
-        page: PropTypes.string,
-        category: PropTypes.string,
-    }),
-    title: PropTypes.string,
-    api: PropTypes.string,
-    data: PropTypes.object
 }
