@@ -51,18 +51,24 @@ export default class TopPayerForm extends Component {
         }
     }
 
-    static getDerivedStateFromProps(props, state) {
-        if (props.id != state.id) {
-            const { coalition, lives, order, status } = props.data;
-            return {
+    componentDidMount(){
+        if( this.props.edit ){
+            const { _id, coalition, state, lives, status, order } = this.props.data;
+            this.setState({
+                _id: _id,
                 coalition: coalition,
+                state: state,
                 lives: lives,
                 status: status,
-                order: order,
-                id: props.id
-            }
+                order: order
+            })
         }
-        return null;
+        else{
+            const {order} = this.props.data;
+            this.setState({
+                order: order
+            })
+        }
     }
 
     onChangeCoalition = (e) => {
@@ -90,7 +96,7 @@ export default class TopPayerForm extends Component {
     }
 
     onFormSubmit = () => {
-        if( !this.state._id ){
+        if( !this.props.edit ){
             this._serivce.createTopPayer({ ...this.state, type: this.props.type})
                 .then((res) => {
                     var data = {...res.data, payer: {name: this.payersJSON[this.state.coalition]}}
@@ -121,7 +127,6 @@ export default class TopPayerForm extends Component {
                     <Select
                         value={this.state.coalition}
                         onChange={this.onChangeCoalition}
-                        disabled={this.props.edit}
                     >
                         {this.payers.map((payer, index) => ( 
                                     <MenuItem value={payer['_id']} key={index}>{payer['name']}</MenuItem>) 
@@ -154,6 +159,7 @@ export default class TopPayerForm extends Component {
                     <Select
                         value={this.state.order}
                         onChange={this.onChangeOrder}
+                        disabled
                     >
                         <MenuItem value={1}>1st</MenuItem>
                         <MenuItem value={2}>2nd</MenuItem>

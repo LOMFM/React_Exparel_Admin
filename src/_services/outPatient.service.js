@@ -204,7 +204,7 @@ export default class OutPatientService{
     updateTopPayer(data, id) {
         return new Promise((resolved, rejected) => {
             axios
-                .post(`${server}/api/exparel/update-tops/${id}`, data)
+                .put(`${server}/api/exparel/update-tops/${id}`, data)
                 .then((res) => {
                     resolved(res.data)
                 })
