@@ -98,11 +98,11 @@ export default class TopDentalPayerPage extends Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {this.state && this.state.data && this.state.data.length ? (this.state.data.map(({ _id, coalition, lives, status }, index) => (
+                                    {this.state && this.state.data && this.state.data.length ? (this.state.data.map((data, index) => (
                                         <TableRow key={index}>
-                                            <TableCell className="pl-3 fw-normal">{this.payers[coalition]}</TableCell>
-                                            <TableCell>{lives}</TableCell>
-                                            <TableCell>{status} %</TableCell>
+                                            <TableCell className="pl-3 fw-normal">{data.payer ? data.payer.name : ''}</TableCell>
+                                            <TableCell>{data.lives}</TableCell>
+                                            <TableCell>{data.status} %</TableCell>
                                             <TableCell>
                                                 <Button onClick={() => this.openEditor(index)} variant="contained" color="primary" size="small">Edit</Button>
                                             </TableCell>

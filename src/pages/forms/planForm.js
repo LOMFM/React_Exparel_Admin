@@ -64,7 +64,7 @@ export default class PlanForm extends Component {
                 this.setState({
                     submitting: false
                 })
-                this.props.submit(res.data)
+                this.props.submit({...res.data, payer: res.payer})
             })
             .catch((err) => {
                 this.setState({

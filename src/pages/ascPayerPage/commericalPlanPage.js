@@ -124,7 +124,7 @@ export default class ASCCommercialPlanPage extends Component {
                                     }
                                     {this.state && this.state.data && this.state.data.length && !this.state.loading ? (this.state.data.map((data, index) => (
                                         <TableRow key={index}>
-                                            <TableCell className="pl-3 fw-normal">{this.payers[data.coalition]}</TableCell>
+                                            <TableCell className="pl-3 fw-normal">{data.payer ? data.payer.name : ''}</TableCell>
                                             <TableCell>{data.plan}</TableCell>
                                             <TableCell>{data.asc_flag ? "YES" : "No"}</TableCell>
                                             <TableCell>{data.hopd_flag ? "YES" : "No"}</TableCell>

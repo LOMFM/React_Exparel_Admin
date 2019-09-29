@@ -58,6 +58,8 @@ export default class DentalPayerListPage extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         })
+        this.editFlag = false;
+        this.planToEdit = {}
     }
 
     openEditor(data) {
@@ -73,7 +75,7 @@ export default class DentalPayerListPage extends Component {
             this.state.data.forEach(e => {
                 if (e._id == data._id) {
                     const { type, coalition, state, active, pending, inactive, 
-                        effective_date, confirmed_flag, medicare_flag, medicaid_flag, medicaid_plan,
+                        effective_date, confirm_flag, medicare_flag, medicaid_flag, medicaid_plan,
                         medicaid_active_plan, medicaid_inactive_plan, medicaid_pending_plan,
                         commercial_flag, commercial_active_plan, commercial_inactive_plan, commercial_pending_plan,
                         work_flag, reimbursement, comment, criteria, coverage_policy} = data;
@@ -84,6 +86,7 @@ export default class DentalPayerListPage extends Component {
                     e.pending = pending
                     e.inactive = inactive
                     e.effective_date = effective_date
+                    e.confirm_flag = confirm_flag
                     e.medicare_flag = medicare_flag
                     e.medicaid_flag = medicaid_flag
                     e.commercial_flag = commercial_flag
@@ -142,7 +145,7 @@ export default class DentalPayerListPage extends Component {
                                                 <TableCell>{data.active}%</TableCell>
                                                 <TableCell>{data.pending}%</TableCell>
                                                 <TableCell>{data.inactive}%</TableCell>
-                                                <TableCell>{data.effective_date}</TableCell>
+                                                <TableCell>{data.confirm_flag ? 'Confirmed': ''} {data.effective_date}</TableCell>
                                                 <TableCell>{data.reimbursement}</TableCell>
                                                 <TableCell>{data.comment}</TableCell>
                                                 <TableCell>{data.criteria}</TableCell>                                                

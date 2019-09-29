@@ -58,6 +58,8 @@ export default class HOPDPayerListPage extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         })
+        this.editFlag = false;
+        this.planToEdit = {}
     }
 
     openEditor(data) {
@@ -73,7 +75,7 @@ export default class HOPDPayerListPage extends Component {
             this.state.data.forEach(e => {
                 if (e._id == data._id) {
                     const { type, coalition, state, active, pending, inactive, 
-                        effective_date, confirmed_flag, medicare_flag, medicaid_flag, medicaid_plan,
+                        effective_date, confirm_flag, medicare_flag, medicaid_flag, medicaid_plan,
                         medicaid_active_plan, medicaid_inactive_plan, medicaid_pending_plan,
                         commercial_flag, commercial_active_plan, commercial_inactive_plan, commercial_pending_plan,
                         work_flag, reimbursement, comment, criteria, coverage_policy} = data;
@@ -86,6 +88,7 @@ export default class HOPDPayerListPage extends Component {
                     e.effective_date = effective_date
                     e.medicare_flag = medicare_flag
                     e.medicaid_flag = medicaid_flag
+                    e.confirm_flag = confirm_flag
                     e.commercial_flag = commercial_flag
                     e.work_flag = work_flag
                     e.medicaid_plan = medicaid_plan
@@ -142,25 +145,25 @@ export default class HOPDPayerListPage extends Component {
                                                 <TableCell>{data.active}%</TableCell>
                                                 <TableCell>{data.pending}%</TableCell>
                                                 <TableCell>{data.inactive}%</TableCell>
-                                                <TableCell>{data.effective_date}</TableCell>
+                                                <TableCell>{data.confirm_flag ? 'Confirmed': ''} {data.effective_date}</TableCell>
                                                 <TableCell>
                                                     {
-                                                        data.medicare_flag == 1 ? 'Yes' : data.medicare_active == 0 ? 'No' : 'TBD'
+                                                        data.medicare_flag == 1 ? 'Yes' : data.medicare_flag == 0 ? 'No' : data.medicare_flag == -1 ? "TBD" : ''
                                                     }
                                                 </TableCell>
                                                 <TableCell>
                                                 {
-                                                        data.medicaid_flag == 1? 'Yes' : data.medicare_active == 0 ? 'No' : 'TBD'
+                                                       data.medicaid_flag == 1 ? 'Yes' : data.medicaid_flag == 0 ? 'No' : data.medicaid_flag == -1 ? "TBD" : ''
                                                     }
                                                 </TableCell>
                                                 <TableCell>
                                                 {
-                                                        data.commercial_flag == 1 ? 'Yes' : data.commercial_flag == 0 ? 'No' : 'TBD'
+                                                        data.commercial_flag == 1 ? 'Yes' : data.commercial_flag == 0 ? 'No' : data.commercial_flag == -1 ? "TBD" : ''
                                                     }
                                                 </TableCell>
                                                 <TableCell>
                                                 {
-                                                        data.work_flag == 1 ? 'Yes' : data.work_flag == 0 ? 'No' : 'TBD'
+                                                        data.work_flag == 1 ? 'Yes' : data.work_flag == 0 ? 'No' : data.work_flag == -1 ? "TBD" : ''
                                                     }
                                                 </TableCell>
                                                 <TableCell>{data.reimbursement}</TableCell>

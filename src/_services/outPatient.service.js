@@ -2,8 +2,8 @@ import axios from 'axios'
 import { resolve } from 'url';
 import { reject } from 'q';
 // import config from '../constants/constants.config';
-var server = 'https://exparel-server.herokuapp.com';
-// var server = 'http://localhost:5000';
+// var server = 'https://exparel-server.herokuapp.com';
+var server = 'http://localhost:5000';
 
 export default class OutPatientService{
     getGlobalStatus(){
@@ -320,6 +320,20 @@ export default class OutPatientService{
                     rejected(err)
                 })
         })
+    }
+
+    getHospitalData(data){
+        const {type, category, payer} = data
+        return new Promise((resolved, rejected) => {
+            axios
+                .get(`${server}/api/exparel/get-hospital/${type}/${category}/${payer}`,)
+                .then((res) => {
+                    resolved(res.data)
+                })
+                .catch((err) => {
+                    rejected(err)
+                })
+        }) 
     }
 
     getTotalPlan(data){

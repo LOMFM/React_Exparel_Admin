@@ -11,7 +11,7 @@ import {
 import OutPatientService from '../../_services/outPatient.service';
 import Modal from '../components/modal';
 import TotalPlanForm from '../forms/totalPlanForm';
-import PlanForm from '../forms/planForm';
+import SurgeryItemForm from '../forms/surgeryItemForm';
 
 export default class SurgeryListPage extends Component {
 
@@ -44,7 +44,7 @@ export default class SurgeryListPage extends Component {
         this.setState({ loading1: true })
         this._service.getPayerPlans({ type: 'surgery', category: "system" })
             .then(res => {
-                this.state.data = res.data;
+                this.state.systemData = res.data;
                 this.setState({ loading1: false })
             })
             .catch(err => {
@@ -55,7 +55,7 @@ export default class SurgeryListPage extends Component {
         this.setState({ loading2: true })
         this._service.getPayerPlans({ type: 'surgery', category: "institution" })
             .then(res => {
-                this.state.data = res.data;
+                this.state.institusData = res.data;
                 this.setState({ loading2: false })
             })
             .catch(err => {
@@ -87,19 +87,25 @@ export default class SurgeryListPage extends Component {
     }
 
     openInstitusEditor(data) {
-        this.institusData = data
+        this.institusToEdit = data
         this.institusEditFlag = true
         this.setState({
             isInstitusOpen: true
         })
     }
 
-    editSystemData() {
+    editSystemData(data) {
+        console.log( data );
         if(this.systemEditFlag) {
-
+            this.state.systemData.forEach( e => {
+                if( e._id == data._id){
+                    e.plan = data.plan
+                    e.status = data.status
+                }
+            })
         }
         else {
-
+            this.state.systemData.push(data)
         }
         this.systemEditFlag = false
         this.setState({
@@ -107,12 +113,17 @@ export default class SurgeryListPage extends Component {
         })
     }
 
-    editInstitusData() {
+    editInstitusData(data) {
         if(this.institusEditFlag) {
-
+            this.state.institusData.forEach(e => {
+                if( e._id == data._id ){
+                    e.plan = data.plan
+                    e.status = data.status
+                }
+            })
         }
         else{
-
+            this.state.institusData.push(data)
         }
         this.institusEditFlag = false
         this.setState({
@@ -124,8 +135,12 @@ export default class SurgeryListPage extends Component {
         this.index = -1
         this.setState({
             isSystemOpen: false,
-            isInstitusOpen: false
+            isInstitusOpen: false,
         })
+        this.institusEditFlag = false
+        this.systemEditFlag = false
+        this.systemToEdit = {}
+        this.institusToEdit = {}
     }
 
     editData(data) {
@@ -157,8 +172,9 @@ export default class SurgeryListPage extends Component {
                         <Grid item xs={12}>
                             <Button onClick={this.openSystemModal} variant="contained" size="small" color="primary">Add</Button>
                         </Grid>
+                        <div className="divider"></div>
                         <Grid item xs={12} md={11}>
-                            <Widget title="Plan Lists" upperTitle noBodyPadding>
+                            <Widget title="Hospital System List" upperTitle noBodyPadding>
                                 <Table className="mb-0">
                                     <TableHead>
                                         <TableRow>
@@ -174,7 +190,7 @@ export default class SurgeryListPage extends Component {
                                                 <TableCell>{data.plan}</TableCell>
                                                 <TableCell>{data.status ? "Active" : 'No'}</TableCell>
                                                 <TableCell>
-                                                    <Button onClick={() => this.openEditor(data)} variant="contained" color="primary" size="small">Edit</Button>
+                                                    <Button onClick={() => this.openSystemEditor(data)} variant="contained" color="primary" size="small">Edit</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))) : (<TableRow >
@@ -189,8 +205,9 @@ export default class SurgeryListPage extends Component {
                         <Grid item xs={12}>
                             <Button onClick={this.openInstitusModal} variant="contained" size="small" color="primary">Add</Button>
                         </Grid>
+                        <div className="divider"></div>
                         <Grid item xs={12} md={11}>
-                            <Widget title="Plan Lists" upperTitle noBodyPadding>
+                            <Widget title="Hospital Institutions List" upperTitle noBodyPadding>
                                 <Table className="mb-0">
                                     <TableHead>
                                         <TableRow>
@@ -206,7 +223,7 @@ export default class SurgeryListPage extends Component {
                                                 <TableCell>{data.plan}</TableCell>
                                                 <TableCell>{data.status ? "Active" : 'No'}</TableCell>
                                                 <TableCell>
-                                                    <Button onClick={() => this.openEditor(data)} variant="contained" color="primary" size="small">Edit</Button>
+                                                    <Button onClick={() => this.openInstitusEditor(data)} variant="contained" color="primary" size="small">Edit</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))) : (<TableRow >
@@ -217,6 +234,12 @@ export default class SurgeryListPage extends Component {
                             </Widget>
                         </Grid>
                     </Grid>
+                    { this.state.isSystemOpen ? (<Modal show={this.state.isSystemOpen} onClose={this.toggleModal} class={'small'} title={ this.index !== -1 ? "Edit Hospital System Data" : "New Hospital System Data" }>
+                        <SurgeryItemForm data={this.systemToEdit}  basic={{type: 'surgery', category: 'system'}} submit={(data) => this.editSystemData(data)} edit={this.systemEditFlag}></SurgeryItemForm>
+                    </Modal> ) : ''}
+                    { this.state.isInstitusOpen ? (<Modal show={this.state.isInstitusOpen} onClose={this.toggleModal} class={'small'} title={ this.index !== -1 ? "Edit Hospital Institutions Data" : "New Hospital Institutions Data" }>
+                        <SurgeryItemForm data={this.institusToEdit}  basic={{type: 'surgery', category: 'institution'}} submit={(data) => this.editInstitusData(data)} edit={this.institusEditFlag}></SurgeryItemForm>
+                    </Modal> ) : ''}
                 </Grid>
             </>
         )

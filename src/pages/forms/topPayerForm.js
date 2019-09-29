@@ -19,6 +19,9 @@ export default class TopPayerForm extends Component {
 
     _serivce = new OutPatientService()
 
+    payers = []
+    payersJSON= {}
+
     constructor(props) {
         super(props)
 
@@ -37,10 +40,16 @@ export default class TopPayerForm extends Component {
         this.onFormSubmit = this.onFormSubmit.bind(this)
 
         let payerArray = localStorage.getItem("payerArray");
-        this.payers = JSON.parse(payerArray);
-    }
+        if( payerArray ){
+            this.payers = JSON.parse(payerArray);
+        }
+        
 
-    prevProp = null
+        let payers = localStorage.getItem("payers");
+        if( payers ){
+            this.payersJSON = JSON.parse(payers)
+        }
+    }
 
     static getDerivedStateFromProps(props, state) {
         if (props.id != state.id) {
@@ -84,7 +93,8 @@ export default class TopPayerForm extends Component {
         if( !this.state._id ){
             this._serivce.createTopPayer({ ...this.state, type: this.props.type})
                 .then((res) => {
-                    this.props.submit(res.data);
+                    var data = {...res.data, payer: {name: this.payersJSON[this.state.coalition]}}
+                    this.props.submit(data);
                 })
                 .catch(err => {
                     
@@ -93,7 +103,8 @@ export default class TopPayerForm extends Component {
         else {
             this._serivce.updateTopPayer({ ...this.state, type: this.props.type}, this.state._id)
                 .then((res) => {
-                    this.props.submit(res.data);
+                    var data = {...res.data, payer: {name: this.payersJSON[this.state.coalition]}}
+                    this.props.submit(data);
                 })
                 .catch(err => {
 
@@ -101,8 +112,6 @@ export default class TopPayerForm extends Component {
         }
         
     }
-
-    payers = []
 
     render() {
         return (
@@ -118,7 +127,7 @@ export default class TopPayerForm extends Component {
                                     <MenuItem value={payer['_id']} key={index}>{payer['name']}</MenuItem>) 
                         )}
                     </Select>
-                    <div class="divider"></div>
+                    <div className="divider"></div>
                     <Typography>Lives</Typography>
                     <TextField
                         id="live"

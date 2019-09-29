@@ -18,7 +18,7 @@ import OutPatientService from '../../_services/outPatient.service';
 
 export default class SurgeryItemForm extends Component {
 
-    _service = new OutPatientService;
+    _service = new OutPatientService();
 
     payers = []
 
@@ -27,15 +27,11 @@ export default class SurgeryItemForm extends Component {
         this.state = {
             coalition: '',
             plan: 0,
-            asc_flag: false,
-            hopd_flag: false,
             status: 0
         }
         this.formSubmit = this.formSubmit.bind(this)
         this.onChangeCoalition = this.onChangeCoalition.bind(this)
-        this.onChangePlan = this.onChangePlan.bind(this)
-        this.onChangeASC = this.onChangeASC.bind(this)
-        this.onChangeHOPD = this.onChangeHOPD.bind(this)
+        this.onChangeLive = this.onChangeLive.bind(this)
         this.onChangeStatus = this.onChangeStatus.bind(this)
 
         let payerArray = localStorage.getItem("payerArray");
@@ -43,14 +39,25 @@ export default class SurgeryItemForm extends Component {
     }
 
     componentDidMount() {
-            const { coalition, plan, asc_flag, hopd_flag, status } = this.props.data;
-            this.setState( {
-                coalition: coalition,
-                plan: plan,
-                asc_flag: asc_flag,
-                hopd_flag: hopd_flag,
-                status: status
-            } )
+        if( this.props.edit ){
+            // To Get The data from server
+            // this.setState({loading: true})
+            // console.log(this.props.basic, this.props.data)
+            // this._service.getHospitalData({...this.props.basic, payer: this.props.data.coalition})
+            //     .then((res) => {
+            //         console.log(res);
+            //         this.setState({loading: false})
+            //     })
+            //     .catch((err) => {
+            //         this.setState({loading: false, error: "Could`t load the data."});
+            //     })
+            this.state = this.props.data
+            this.setState({
+                coalition: this.props.data.coalition,
+                plan: this.props.data.plan,
+                status: this.props.data.status
+            })
+        }
     }
 
     formSubmit(e) {
@@ -78,30 +85,16 @@ export default class SurgeryItemForm extends Component {
             coalition: e.target.value
         })
     }
-    onChangePlan(e) {
+    onChangeLive(e) {
         this.setState({
             plan: e.target.value
         })
     }
-    onChangeASC(e) {
-
-        this.setState({
-            asc_flag: !this.state.asc_flag
-        })
-
-    }
-    onChangeHOPD(e) {
-        this.setState({
-            hopd_flag: !this.state.hopd_flag
-        })
-    }
     onChangeStatus(e) {
         this.setState({
-            status: e.target.value
+            status: this.state.status == 0 ? 1 : 0
         })
     }
-
-
 
     render() {
         return (
@@ -119,47 +112,19 @@ export default class SurgeryItemForm extends Component {
                         
                     </Select>
                     <div className="divider"></div>
-                    <Typography>Plans</Typography>
+                    <Typography>Lives</Typography>
                     <TextField
-                        id="total_plan"
+                        id="total_lives"
                         value={this.state.plan}
-                        onChange={this.onChangePlan}
+                        onChange={this.onChangeLive}
                         margin="normal"
-                        placeholder="Plans"
+                        placeholder="Lives"
                         type="number"
                         fullWidth
                     />
-                    { this.props.dental ? 
-                        "" : (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={this.state.asc_flag} onChange={this.onChangeASC} value="true" />
-                                }
-                                label="ASC Coverage"
-                            />
-                        )
-                    }
-                    { this.props.dental ? 
-                        "" : (
-                            <FormControlLabel
-                                control={
-                                    <Checkbox checked={this.state.hopd_flag} onChange={this.onChangeHOPD} value="true" />
-                                }
-                                label="HOPD Coverage"
-                            />
-                        )
-                    }
-                    
-                    
-                    <Typography>Status (%)</Typography>
-                    <TextField
-                        id="status"
-                        value={this.state.status}
-                        onChange={this.onChangeStatus}
-                        margin="normal"
-                        placeholder="Status"
-                        type="number"
-                        fullWidth
+                    <FormControlLabel
+                        control={<Checkbox checked={this.state.status} onChange={this.onChangeStatus} value="1" />}
+                        label="Status"
                     />
                 </div>
                 <div className="form-actions">
