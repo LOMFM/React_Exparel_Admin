@@ -9,7 +9,7 @@ export default class PatientGlobalStatus extends Component {
     render() {
         return (
             <>
-                <PageTitle title="National Payer Out-Patient" />
+                <PageTitle title="National Payer Outpatient" />
                 <Grid container spacing={4}>
                     <Grid item xs={12} md={6} lg={3}>
                         <ServiceStatusForm title="Medicare ASC" basic={{page: 'patient', category: 'medicare', type: 'asc'}} ></ServiceStatusForm>

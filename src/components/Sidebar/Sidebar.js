@@ -31,7 +31,7 @@ import {
 } from "../../context/LayoutContext";
 
 const structure = [
-  { id: 0, label: "Out-Patient", link: "/app/out-patient", icon: <HomeIcon /> ,
+  { id: 0, label: "Outpatient", link: "/app/out-patient", icon: <HomeIcon /> ,
     children: [
       {label: 'Global Status', link: "/app/out-patient/global-status"},
       {label: 'Live Status', link: "/app/out-patient/live-status"}
@@ -91,7 +91,7 @@ const structure = [
     children: [
       {label: 'ASC', link: '/app/state-coverage/asc'},
       {label: 'HOPD', link: '/app/state-coverage/hopd'},
-      {label: 'In-Patient', link: '/app/state-coverage/in-patient'},
+      {label: 'Inpatient', link: '/app/state-coverage/in-patient'},
     ]
   },
   {

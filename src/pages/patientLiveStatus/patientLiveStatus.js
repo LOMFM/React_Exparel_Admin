@@ -47,7 +47,7 @@ export default class PatientLiveStatus extends Component {
     render() {
         return (
             <>
-                <PageTitle title="National Payer Out-Patient" />
+                <PageTitle title="National Payer Outpatient" />
                 <Grid className="block">
                     <Grid container className="form-table">
                         <Grid row className="flex-row header">
